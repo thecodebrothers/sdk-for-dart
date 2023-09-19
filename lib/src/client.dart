@@ -62,6 +62,7 @@ abstract class Client {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    bool digitalOceanUpload = false,
   });
 
   /// Send the API request.

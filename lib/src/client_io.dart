@@ -20,7 +20,7 @@ ClientBase createClient({
     );
 
 class ClientIO extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5*1024*1024;
+  static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -43,8 +43,9 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-platform': 'server',
       'x-sdk-language': 'dart',
       'x-sdk-version': '10.0.0',
-      'user-agent' : 'AppwriteDartSDK/10.0.0 (${Platform.operatingSystem}; ${Platform.operatingSystemVersion})',
-      'X-Appwrite-Response-Format' : '1.4.0',
+      'user-agent':
+          'AppwriteDartSDK/10.0.0 (${Platform.operatingSystem}; ${Platform.operatingSystemVersion})',
+      'X-Appwrite-Response-Format': '1.4.0',
     };
 
     config = {};
@@ -56,33 +57,36 @@ class ClientIO extends ClientBase with ClientMixin {
   @override
   String get endPoint => _endPoint;
 
-     /// Your project ID
-    @override
-    ClientIO setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret API key
-    @override
-    ClientIO setKey(value) {
-        config['key'] = value;
-        addHeader('X-Appwrite-Key', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientIO setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientIO setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientIO setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret API key
+  @override
+  ClientIO setKey(value) {
+    config['key'] = value;
+    addHeader('X-Appwrite-Key', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientIO setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientIO setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
@@ -111,6 +115,7 @@ class ClientIO extends ClientBase with ClientMixin {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    bool digitalOceanUpload = false,
   }) async {
     InputFile file = params[paramName];
     if (file.path == null && file.bytes == null) {
@@ -167,19 +172,21 @@ class ClientIO extends ClientBase with ClientMixin {
       raf = await iofile.open(mode: FileMode.read);
     }
 
+    final chunkOffsetModifier = digitalOceanUpload ? 0 : 1;
+
     while (offset < size) {
       List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE - 1, size - 1);
+        final end = min(offset + CHUNK_SIZE - chunkOffsetModifier, size - 1);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
         chunk = raf.readSync(CHUNK_SIZE);
       }
-      params[paramName] =
-          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
+          filename: file.filename);
       headers['content-range'] =
-          'bytes $offset-${min<int>((offset + CHUNK_SIZE - 1), size - 1)}/$size';
+          'bytes $offset-${min<int>((offset + CHUNK_SIZE - chunkOffsetModifier), size - 1)}/$size';
       res = await call(HttpMethod.post,
           path: path, headers: headers, params: params);
       offset += CHUNK_SIZE;

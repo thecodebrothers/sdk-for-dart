@@ -99,6 +99,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    bool digitalOceanUpload = false,
   }) async {
     InputFile file = params[paramName];
     if (file.bytes == null) {
