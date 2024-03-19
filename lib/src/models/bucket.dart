@@ -8,9 +8,9 @@ class Bucket implements Model {
     final String $createdAt;
     /// Bucket update date in ISO 8601 format.
     final String $updatedAt;
-    /// Bucket permissions. [Learn more about permissions](/docs/permissions).
+    /// Bucket permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
     final List $permissions;
-    /// Whether file-level security is enabled. [Learn more about permissions](/docs/permissions).
+    /// Whether file-level security is enabled. [Learn more about permissions](https://appwrite.io/docs/permissions).
     final bool fileSecurity;
     /// Bucket name.
     final String name;
@@ -47,12 +47,12 @@ class Bucket implements Model {
             $id: map['\$id'].toString(),
             $createdAt: map['\$createdAt'].toString(),
             $updatedAt: map['\$updatedAt'].toString(),
-            $permissions: map['\$permissions'],
+            $permissions: map['\$permissions'] ?? [],
             fileSecurity: map['fileSecurity'],
             name: map['name'].toString(),
             enabled: map['enabled'],
             maximumFileSize: map['maximumFileSize'],
-            allowedFileExtensions: map['allowedFileExtensions'],
+            allowedFileExtensions: map['allowedFileExtensions'] ?? [],
             compression: map['compression'].toString(),
             encryption: map['encryption'],
             antivirus: map['antivirus'],

@@ -29,7 +29,7 @@ class ClientIO extends ClientBase with ClientMixin {
   late HttpClient _nativeClient;
 
   ClientIO({
-    String endPoint = 'https://HOSTNAME/v1',
+    String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
   }) : _endPoint = endPoint {
     _nativeClient = HttpClient()
@@ -42,10 +42,9 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Dart',
       'x-sdk-platform': 'server',
       'x-sdk-language': 'dart',
-      'x-sdk-version': '10.0.0',
-      'user-agent':
-          'AppwriteDartSDK/10.0.0 (${Platform.operatingSystem}; ${Platform.operatingSystemVersion})',
-      'X-Appwrite-Response-Format': '1.4.0',
+      'x-sdk-version': '11.0.1',
+      'user-agent' : 'AppwriteDartSDK/11.0.1 (${Platform.operatingSystem}; ${Platform.operatingSystemVersion})',
+      'X-Appwrite-Response-Format' : '1.5.0',
     };
 
     config = {};
@@ -57,36 +56,47 @@ class ClientIO extends ClientBase with ClientMixin {
   @override
   String get endPoint => _endPoint;
 
-  /// Your project ID
-  @override
-  ClientIO setProject(value) {
-    config['project'] = value;
-    addHeader('X-Appwrite-Project', value);
-    return this;
-  }
-
-  /// Your secret API key
-  @override
-  ClientIO setKey(value) {
-    config['key'] = value;
-    addHeader('X-Appwrite-Key', value);
-    return this;
-  }
-
-  /// Your secret JSON Web Token
-  @override
-  ClientIO setJWT(value) {
-    config['jWT'] = value;
-    addHeader('X-Appwrite-JWT', value);
-    return this;
-  }
-
-  @override
-  ClientIO setLocale(value) {
-    config['locale'] = value;
-    addHeader('X-Appwrite-Locale', value);
-    return this;
-  }
+     /// Your project ID
+    @override
+    ClientIO setProject(value) {
+        config['project'] = value;
+        addHeader('X-Appwrite-Project', value);
+        return this;
+    }
+     /// Your secret API key
+    @override
+    ClientIO setKey(value) {
+        config['key'] = value;
+        addHeader('X-Appwrite-Key', value);
+        return this;
+    }
+     /// Your secret JSON Web Token
+    @override
+    ClientIO setJWT(value) {
+        config['jWT'] = value;
+        addHeader('X-Appwrite-JWT', value);
+        return this;
+    }
+    @override
+    ClientIO setLocale(value) {
+        config['locale'] = value;
+        addHeader('X-Appwrite-Locale', value);
+        return this;
+    }
+     /// The user session to authenticate with
+    @override
+    ClientIO setSession(value) {
+        config['session'] = value;
+        addHeader('X-Appwrite-Session', value);
+        return this;
+    }
+     /// The user agent string of the client that made the request
+    @override
+    ClientIO setForwardedUserAgent(value) {
+        config['forwardedUserAgent'] = value;
+        addHeader('X-Forwarded-User-Agent', value);
+        return this;
+    }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
@@ -204,6 +214,14 @@ class ClientIO extends ClientBase with ClientMixin {
     }
     raf?.close();
     return res;
+  }
+
+  @override
+  Future<String?> webAuth(Uri url) async {
+    final request = http.Request('GET', url);
+    request.followRedirects = false;
+    final response = await _httpClient.send(request);
+    return response.headers['location'];
   }
 
   @override
