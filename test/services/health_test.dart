@@ -107,6 +107,27 @@ void main() {
 
         });
 
+        test('test method getCertificate()', () async {
+            final Map<String, dynamic> data = {
+                'name': '/CN=www.google.com',
+                'subjectSN': '',
+                'issuerOrganisation': '',
+                'validFrom': '1704200998',
+                'validTo': '1711458597',
+                'signatureTypeSN': 'RSA-SHA256',};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getCertificate(
+            );
+            expect(response, isA<models.HealthCertificate>());
+
+        });
+
         test('test method getDB()', () async {
             final Map<String, dynamic> data = {
                 'name': 'database',
@@ -161,6 +182,22 @@ void main() {
 
         });
 
+        test('test method getQueueBuilds()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueBuilds(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
         test('test method getQueueCertificates()', () async {
             final Map<String, dynamic> data = {
                 'size': 8,};
@@ -172,6 +209,55 @@ void main() {
 
 
             final response = await health.getQueueCertificates(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getQueueDatabases()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueDatabases(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getQueueDeletes()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueDeletes(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getFailedJobs()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getFailedJobs(
+                name: 'v1-database',
             );
             expect(response, isA<models.HealthQueue>());
 
@@ -209,6 +295,86 @@ void main() {
 
         });
 
+        test('test method getQueueMails()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueMails(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getQueueMessaging()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueMessaging(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getQueueMigrations()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueMigrations(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getQueueUsage()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueUsage(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getQueueUsageDump()', () async {
+            final Map<String, dynamic> data = {
+                'size': 8,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getQueueUsageDump(
+            );
+            expect(response, isA<models.HealthQueue>());
+
+        });
+
         test('test method getQueueWebhooks()', () async {
             final Map<String, dynamic> data = {
                 'size': 8,};
@@ -222,6 +388,24 @@ void main() {
             final response = await health.getQueueWebhooks(
             );
             expect(response, isA<models.HealthQueue>());
+
+        });
+
+        test('test method getStorage()', () async {
+            final Map<String, dynamic> data = {
+                'name': 'database',
+                'ping': 128,
+                'status': 'pass',};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await health.getStorage(
+            );
+            expect(response, isA<models.HealthStatus>());
 
         });
 

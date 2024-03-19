@@ -12,7 +12,7 @@ class Document implements Model {
     final String $createdAt;
     /// Document update date in ISO 8601 format.
     final String $updatedAt;
-    /// Document permissions. [Learn more about permissions](/docs/permissions).
+    /// Document permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
     final List $permissions;
     final Map<String, dynamic> data;
 
@@ -33,7 +33,7 @@ class Document implements Model {
             $databaseId: map['\$databaseId'].toString(),
             $createdAt: map['\$createdAt'].toString(),
             $updatedAt: map['\$updatedAt'].toString(),
-            $permissions: map['\$permissions'],
+            $permissions: map['\$permissions'] ?? [],
             data: map,
         );
     }

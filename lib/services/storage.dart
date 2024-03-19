@@ -38,7 +38,7 @@ class Storage extends Service {
       bool? enabled,
       int? maximumFileSize,
       List<String>? allowedFileExtensions,
-      String? compression,
+      enums.Compression? compression,
       bool? encryption,
       bool? antivirus}) async {
     final String apiPath = '/storage/buckets';
@@ -51,7 +51,7 @@ class Storage extends Service {
       'enabled': enabled,
       'maximumFileSize': maximumFileSize,
       'allowedFileExtensions': allowedFileExtensions,
-      'compression': compression,
+      'compression': compression?.value,
       'encryption': encryption,
       'antivirus': antivirus,
     };
@@ -66,7 +66,7 @@ class Storage extends Service {
     return models.Bucket.fromMap(res.data);
   }
 
-  /// Get Bucket
+  /// Get bucket
   ///
   /// Get a storage bucket by its unique ID. This endpoint response returns a
   /// JSON object with the storage bucket metadata.
@@ -86,7 +86,7 @@ class Storage extends Service {
     return models.Bucket.fromMap(res.data);
   }
 
-  /// Update Bucket
+  /// Update bucket
   ///
   /// Update a storage bucket by its unique ID.
   Future<models.Bucket> updateBucket(
@@ -97,7 +97,7 @@ class Storage extends Service {
       bool? enabled,
       int? maximumFileSize,
       List<String>? allowedFileExtensions,
-      String? compression,
+      enums.Compression? compression,
       bool? encryption,
       bool? antivirus}) async {
     final String apiPath =
@@ -110,7 +110,7 @@ class Storage extends Service {
       'enabled': enabled,
       'maximumFileSize': maximumFileSize,
       'allowedFileExtensions': allowedFileExtensions,
-      'compression': compression,
+      'compression': compression?.value,
       'encryption': encryption,
       'antivirus': antivirus,
     };
@@ -125,7 +125,7 @@ class Storage extends Service {
     return models.Bucket.fromMap(res.data);
   }
 
-  /// Delete Bucket
+  /// Delete bucket
   ///
   /// Delete a storage bucket by its unique ID.
   Future deleteBucket({required String bucketId}) async {
@@ -144,7 +144,7 @@ class Storage extends Service {
     return res.data;
   }
 
-  /// List Files
+  /// List files
   ///
   /// Get a list of all the user files. You can use the query params to filter
   /// your results.
@@ -168,7 +168,7 @@ class Storage extends Service {
     return models.FileList.fromMap(res.data);
   }
 
-  /// Create File
+  /// Create file
   ///
   /// Create a new file. Before using this route, you should create a new bucket
   /// resource using either a [server
@@ -225,7 +225,7 @@ class Storage extends Service {
     return models.File.fromMap(res.data);
   }
 
-  /// Get File
+  /// Get file
   ///
   /// Get a file by its unique ID. This endpoint response returns a JSON object
   /// with the file metadata.
@@ -296,7 +296,7 @@ class Storage extends Service {
     return res.data;
   }
 
-  /// Get File for Download
+  /// Get file for download
   ///
   /// Get a file content by its unique ID. The endpoint response return with a
   /// 'Content-Disposition: attachment' header that tells the browser to start
@@ -309,7 +309,7 @@ class Storage extends Service {
 
     final Map<String, dynamic> params = {
       'project': client.config['project'],
-      'key': client.config['key'],
+      'session': client.config['session'],
     };
 
     final res = await client.call(HttpMethod.get,
@@ -317,7 +317,7 @@ class Storage extends Service {
     return res.data;
   }
 
-  /// Get File Preview
+  /// Get file preview
   ///
   /// Get a file preview image. Currently, this method supports preview for image
   /// files (jpg, png, and gif), other supported formats, like pdf, docs, slides,
@@ -329,7 +329,7 @@ class Storage extends Service {
       required String fileId,
       int? width,
       int? height,
-      String? gravity,
+      enums.ImageGravity? gravity,
       int? quality,
       int? borderWidth,
       String? borderColor,
@@ -337,7 +337,7 @@ class Storage extends Service {
       double? opacity,
       int? rotation,
       String? background,
-      String? output}) async {
+      enums.ImageFormat? output}) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/preview'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
@@ -345,7 +345,7 @@ class Storage extends Service {
     final Map<String, dynamic> params = {
       'width': width,
       'height': height,
-      'gravity': gravity,
+      'gravity': gravity?.value,
       'quality': quality,
       'borderWidth': borderWidth,
       'borderColor': borderColor,
@@ -353,9 +353,9 @@ class Storage extends Service {
       'opacity': opacity,
       'rotation': rotation,
       'background': background,
-      'output': output,
+      'output': output?.value,
       'project': client.config['project'],
-      'key': client.config['key'],
+      'session': client.config['session'],
     };
 
     final res = await client.call(HttpMethod.get,
@@ -363,7 +363,7 @@ class Storage extends Service {
     return res.data;
   }
 
-  /// Get File for View
+  /// Get file for view
   ///
   /// Get a file content by its unique ID. This endpoint is similar to the
   /// download method but returns with no  'Content-Disposition: attachment'
@@ -376,7 +376,7 @@ class Storage extends Service {
 
     final Map<String, dynamic> params = {
       'project': client.config['project'],
-      'key': client.config['key'],
+      'session': client.config['session'],
     };
 
     final res = await client.call(HttpMethod.get,
